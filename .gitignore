@@ -1,0 +1,8 @@
+briefs/
+logs/
+.env
+__pycache__/
+*.pyc
+.crawl4ai/
+.cache/
+wewe-rss-data/

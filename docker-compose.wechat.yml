@@ -1,0 +1,22 @@
+# 微信公众号正文通道：WeWe RSS（微信读书扫码后出全文 feed）
+# 用法: docker compose -f docker-compose.wechat.yml up -d
+# 然后打开 http://127.0.0.1:4000 扫码并添加公众号，再运行 python wechat.py
+
+services:
+  wewe-rss:
+    image: cooderl/wewe-rss-sqlite:latest
+    container_name: wewe-rss
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      DATABASE_TYPE: sqlite
+      FEED_MODE: fulltext
+      AUTH_CODE: "123567"
+      SERVER_ORIGIN_URL: http://127.0.0.1:4000
+      TZ: Asia/Shanghai
+      UPDATE_DELAY_TIME: 60s
+      # 镜像内 date 仍是 UTC（无 tzdata）。下列按 UTC：00:10 / 03:10 = 北京时间 8:10 / 11:10
+      CRON_EXPRESSION: "10 0,3 * * *"
+    volumes:
+      - ./wewe-rss-data:/app/data
